@@ -267,7 +267,7 @@ export default function Dashboard() {
         <div className="cards-grid">
           
           {/* VEHICLE CARD */}
-          <div onClick={() => router.push(`/vehicles-dashboard?userId=${userId}`)} className="stat-card vehicle-card">
+          <div onClick={() => router.push(`/vehicleDashboard?userId=${userId}`)} className="stat-card vehicle-card">
             <div className="card-header">
               <div className="card-icon vehicle-icon">🚗︎</div>
               <h2 className="card-title">Vehicles</h2>
