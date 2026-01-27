@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "../../components/userHeader"; 
 
@@ -36,6 +36,10 @@ export default function VehiclesDashboard() {
     isError: false
   });
 
+  // Options Menu State
+  const [openMenuId, setOpenMenuId] = useState(null);
+  const menuRef = useRef(null);
+
   // --- 1. INITIAL DATA FETCH (Runs once) ---
   const fetchData = async () => {
     setLoading(true);
@@ -61,6 +65,23 @@ export default function VehiclesDashboard() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenMenuId(null);
+      }
+    };
+
+    if (openMenuId !== null) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [openMenuId]);
 
   // --- 2. LIVE FRONTEND FILTERING LOGIC ---
   useEffect(() => {
@@ -135,6 +156,22 @@ export default function VehiclesDashboard() {
   // --- HANDLERS ---
   const handleFilterChange = (e) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
+  };
+
+  const handleMenuToggle = (vehicleNumber) => {
+    setOpenMenuId(openMenuId === vehicleNumber ? null : vehicleNumber);
+  };
+
+  const handleViewDetails = (vehicleNumber) => {
+    router.push(`/viewVehicleDetails?userId=${userId}&vehicleNumber=${vehicleNumber}`);
+  };
+
+  const handleUpdateDetails = (vehicleNumber) => {
+    router.push(`/updateVehicleDetails?userId=${userId}&vehicleNumber=${vehicleNumber}`);
+  };
+
+  const handleAddToBlacklist = (vehicleNumber) => {
+    router.push(`/addToBlacklist?userId=${userId}&vehicleNumber=${vehicleNumber}`);
   };
 
   // --- HELPER FUNCTIONS FOR DISPLAY ---
@@ -314,7 +351,7 @@ export default function VehiclesDashboard() {
             background: white;
             border-radius: 16px;
             box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
-            overflow: hidden;
+            overflow: visible; /* Changed to visible so menu isn't clipped */
             border: 1px solid #e0f2fe;
             animation: fadeIn 1s ease-out;
         }
@@ -344,6 +381,7 @@ export default function VehiclesDashboard() {
 
         tbody tr {
             transition: all 0.2s;
+            position: relative;
         }
 
         tbody tr:hover {
@@ -376,6 +414,69 @@ export default function VehiclesDashboard() {
             border: 1px solid #93c5fd;
             font-weight: 600;
             display: inline-block;
+        }
+
+        /* --- OPTIONS MENU STYLES --- */
+        .options-cell {
+            position: relative;
+        }
+
+        .options-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            font-size: 20px;
+            color: #64748b;
+            transition: all 0.2s;
+            border-radius: 6px;
+        }
+
+        .options-btn:hover {
+            background: #f0f9ff;
+            color: #3b82f6;
+        }
+
+        .options-menu {
+            position: absolute;
+            right: 0;
+            bottom: 100%;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.2);
+            border: 1px solid #e0f2fe;
+            min-width: 200px;
+            z-index: 1000;
+            overflow: hidden;
+            animation: slideIn 0.2s ease-out;
+        }
+
+        .menu-item {
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #f0f9ff;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item:hover {
+            background: #f0f9ff;
+            color: #3b82f6;
+        }
+
+        .menu-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
         }
 
         /* --- MODAL --- */
@@ -673,13 +774,14 @@ export default function VehiclesDashboard() {
                         {showExpiryColumns && <th>License Expiry</th>}
                         {showExpiryColumns && <th>Insurance Expiry</th>}
                         <th>Status</th>
+                        <th style={{width: '80px', textAlign: 'center'}}>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {loading ? (
-                        <tr><td colSpan={showExpiryColumns ? 6 : 4} style={{textAlign: "center"}}>Loading...</td></tr>
+                        <tr><td colSpan={showExpiryColumns ? 7 : 5} style={{textAlign: "center"}}>Loading...</td></tr>
                     ) : filteredVehicles.length === 0 ? (
-                        <tr><td colSpan={showExpiryColumns ? 6 : 4} style={{textAlign: "center"}}>No vehicles found.</td></tr>
+                        <tr><td colSpan={showExpiryColumns ? 7 : 5} style={{textAlign: "center"}}>No vehicles found.</td></tr>
                     ) : (
                         filteredVehicles.map((v) => (
                             <tr key={v.vehicle_number}>
@@ -704,6 +806,41 @@ export default function VehiclesDashboard() {
                                     <span className={`status-badge ${v.availability === 0 ? 'status-available' : 'status-unavailable'}`}>
                                         {v.availability === 0 ? 'Available' : 'Unavailable'}
                                     </span>
+                                </td>
+                                <td className="options-cell">
+                                    <div ref={openMenuId === v.vehicle_number ? menuRef : null}>
+                                        <button 
+                                            className="options-btn"
+                                            onClick={() => handleMenuToggle(v.vehicle_number)}
+                                        >
+                                            ⋮
+                                        </button>
+                                        {openMenuId === v.vehicle_number && (
+                                            <div className="options-menu">
+                                                <div 
+                                                    className="menu-item"
+                                                    onClick={() => handleViewDetails(v.vehicle_number)}
+                                                >
+                                                    <span className="menu-icon">👁</span>
+                                                    View Details
+                                                </div>
+                                                <div 
+                                                    className="menu-item"
+                                                    onClick={() => handleUpdateDetails(v.vehicle_number)}
+                                                >
+                                                    <span className="menu-icon">✎</span>
+                                                    Update Details
+                                                </div>
+                                                <div 
+                                                    className="menu-item"
+                                                    onClick={() => handleAddToBlacklist(v.vehicle_number)}
+                                                >
+                                                    <span className="menu-icon">⊘</span>
+                                                    Add to Blacklist
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </td>
                             </tr>
                         ))
