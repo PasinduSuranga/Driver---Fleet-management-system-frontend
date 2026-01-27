@@ -608,7 +608,7 @@ export default function VehiclesDashboard() {
         <div className="page-header">
             <h1 className="title">Vehicle Management</h1>
             <div className="header-actions">
-                <button className="nav-btn btn-add-vehicle" onClick={() => router.push(`/addvehicle?userId=${userId}`)}>
+                <button className="nav-btn btn-add-vehicle" onClick={() => router.push(`/addVehicle?userId=${userId}`)}>
                     <span>+</span> Add Vehicle
                 </button>
                 <button className="nav-btn btn-back" onClick={() => router.push(`/userDashboard?userId=${userId}`)}>
