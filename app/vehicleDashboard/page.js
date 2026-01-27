@@ -137,53 +137,6 @@ export default function VehiclesDashboard() {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
 
-  const handleAddCategory = async () => {
-    if (!newCategory.trim()) {
-      setDialog({
-        isOpen: true,
-        title: "Validation Error",
-        message: "Please enter a category name",
-        isError: true
-      });
-      return;
-    }
-
-    try {
-        const res = await fetch("http://localhost:5000/category/categories", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ category_name: newCategory })
-        });
-
-        if (res.ok) {
-            setDialog({
-              isOpen: true,
-              title: "Success",
-              message: "Category added successfully!",
-              isError: false
-            });
-            setNewCategory("");
-            setIsModalOpen(false);
-            fetchData(); // Refresh categories list
-        } else {
-            setDialog({
-              isOpen: true,
-              title: "Error",
-              message: "Failed to add category. Please try again.",
-              isError: true
-            });
-        }
-    } catch (error) {
-        console.error("Error adding category:", error);
-        setDialog({
-          isOpen: true,
-          title: "System Error",
-          message: "Something went wrong. Please check your connection and try again.",
-          isError: true
-        });
-    }
-  };
-
   // --- HELPER FUNCTIONS FOR DISPLAY ---
   const formatDate = (dateString) => {
     if (!dateString) return "-";
@@ -294,7 +247,7 @@ export default function VehiclesDashboard() {
             border-radius: 16px;
             box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
             display: flex;
-            gap: 15px;
+            gap: 60px;
             flex-wrap: wrap;
             align-items: center;
             margin-bottom: 30px;
@@ -622,11 +575,6 @@ export default function VehiclesDashboard() {
                 width: 100%;
             }
 
-            .add-btn {
-                width: 100%;
-                margin-left: 0;
-            }
-
             .table-container {
                 overflow-x: auto;
             }
@@ -712,11 +660,6 @@ export default function VehiclesDashboard() {
                 <option value="today">Expiring Today</option>
                 <option value="month">Expiring This Month</option>
             </select>
-
-            {/* 6. Add Category Button */}
-            <button onClick={() => setIsModalOpen(true)} className="add-btn">
-                + New Category
-            </button>
         </div>
 
         {/* --- DATA TABLE --- */}
