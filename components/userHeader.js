@@ -336,7 +336,7 @@ export default function Header({ userId }) {
             {/* Notification Button */}
             <div className="notification-wrapper">
                 <button 
-                    onClick={() => router.push(`/Notifications?userId=${userId}`)} 
+                    onClick={() => router.push(`/notification?userId=${userId}`)} 
                     className="notification-button"
                     title="View Notifications"
                 >

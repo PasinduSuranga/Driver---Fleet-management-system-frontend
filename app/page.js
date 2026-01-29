@@ -73,7 +73,7 @@ function Login() {
         const userId = data.user?.userId;
 
         if (userRole === "admin") {
-            router.push(`/admin-dashboard?userId=${userId}`);
+            router.push(`/adminDashboard?userId=${userId}`);
         } else if (userRole === "user") {
             router.push(`/userDashboard?userId=${userId}`);
         } else {

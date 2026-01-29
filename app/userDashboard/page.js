@@ -295,7 +295,7 @@ export default function Dashboard() {
           </div>
 
           {/* DRIVER CARD */}
-          <div onClick={() => router.push(`/driver-dashboard?userId=${userId}`)} className="stat-card driver-card">
+          <div onClick={() => router.push(`/driverDashboard?userId=${userId}`)} className="stat-card driver-card">
             <div className="card-header">
               <div className="card-icon driver-icon">👥︎</div>
               <h2 className="card-title">Drivers</h2>
@@ -311,7 +311,7 @@ export default function Dashboard() {
           </div>
 
           {/* NEW ASSIGNMENT CARD */}
-          <div onClick={() => router.push(`/assignments-dashboard?userId=${userId}`)} className="stat-card assignment-card">
+          <div onClick={() => router.push(`/assignmentDashboard?userId=${userId}`)} className="stat-card assignment-card">
             <div className="card-header">
               <div className="card-icon assignment-icon">📋︎</div>
               <h2 className="card-title">Assignments</h2>

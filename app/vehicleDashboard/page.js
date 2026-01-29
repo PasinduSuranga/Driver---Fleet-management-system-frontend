@@ -163,11 +163,11 @@ export default function VehiclesDashboard() {
   };
 
   const handleViewDetails = (vehicleNumber) => {
-    router.push(`/viewVehicleDetails?userId=${userId}&vehicleNumber=${vehicleNumber}`);
+    router.push(`/viewVehicle?userId=${userId}&vehicleNumber=${vehicleNumber}`);
   };
 
   const handleUpdateDetails = (vehicleNumber) => {
-    router.push(`/updateVehicleDetails?userId=${userId}&vehicleNumber=${vehicleNumber}`);
+    router.push(`/updateVehicle?userId=${userId}&vehicleNumber=${vehicleNumber}`);
   };
 
   const handleAddToBlacklist = (vehicleNumber) => {
@@ -197,6 +197,16 @@ export default function VehiclesDashboard() {
   };
 
   const showExpiryColumns = filters.expiry !== "";
+
+    function capitalizeFirstLetter(str) {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function toUpper(str) {
+  if (!str) return "";
+  return str.toUpperCase();
+}
 
   return (
     <>
@@ -749,7 +759,7 @@ export default function VehiclesDashboard() {
                 <option value="">All Categories</option>
                 {categories.map(cat => (
                     <option key={cat.category_id} value={cat.category_id}>
-                        {cat.category_name}
+                        {capitalizeFirstLetter(cat.category_name)}
                     </option>
                 ))}
             </select>
@@ -785,9 +795,9 @@ export default function VehiclesDashboard() {
                     ) : (
                         filteredVehicles.map((v) => (
                             <tr key={v.vehicle_number}>
-                                <td>{v.vehicle_number}</td>
+                                <td>{toUpper(v.vehicle_number)}</td>
                                 <td>{v.vehicle_type}</td>
-                                <td>{v.category_name || "Uncategorized"}</td>
+                                <td>{capitalizeFirstLetter(v.category_name || "Uncategorized")}</td>
                                 {showExpiryColumns && (
                                     <td>
                                         <span className={isExpiring(v.license_expiry_date) ? "expiry-highlight" : ""}>
