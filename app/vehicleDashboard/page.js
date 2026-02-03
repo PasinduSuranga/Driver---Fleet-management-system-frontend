@@ -14,6 +14,7 @@ export default function VehiclesDashboard() {
   const [filteredVehicles, setFilteredVehicles] = useState([]); // Stores the filtered list for display
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false); // New state for action loading
 
   // Filter States
   const [filters, setFilters] = useState({
@@ -170,8 +171,50 @@ export default function VehiclesDashboard() {
     router.push(`/updateVehicle?userId=${userId}&vehicleNumber=${vehicleNumber}`);
   };
 
-  const handleAddToBlacklist = (vehicleNumber) => {
-    router.push(`/addToBlacklist?userId=${userId}&vehicleNumber=${vehicleNumber}`);
+  // --- UPDATED BLACKLIST HANDLER ---
+  const handleAddToBlacklist = async (vehicleNumber) => {
+    setOpenMenuId(null); // Close menu immediately
+    setProcessing(true); // Start loading animation
+
+    try {
+        const response = await fetch("http://localhost:5000/vehicle/blacklist", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ vehicleNumber }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            setDialog({
+                isOpen: true,
+                title: "Success",
+                message: data.message,
+                isError: false
+            });
+            // Refresh data to reflect changes if needed (though backend updates DB)
+            fetchData();
+        } else {
+            setDialog({
+                isOpen: true,
+                title: "Error",
+                message: data.message || "Failed to add to blacklist.",
+                isError: true
+            });
+        }
+    } catch (error) {
+        console.error("Blacklist Error:", error);
+        setDialog({
+            isOpen: true,
+            title: "Network Error",
+            message: "Unable to reach the server. Please try again.",
+            isError: true
+        });
+    } finally {
+        setProcessing(false); // Stop loading animation
+    }
   };
 
   // --- HELPER FUNCTIONS FOR DISPLAY ---
@@ -219,6 +262,11 @@ export default function VehiclesDashboard() {
         @keyframes slideIn {
             from { opacity: 0; transform: translateX(-20px); }
             to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .page-container {
@@ -652,6 +700,38 @@ export default function VehiclesDashboard() {
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
         }
 
+        /* --- LOADING OVERLAY --- */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.8);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            backdrop-filter: blur(4px);
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e0f2fe;
+            border-top: 5px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        .loading-text {
+            color: #1e40af;
+            font-weight: 600;
+            font-size: 16px;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .page-container {
@@ -714,6 +794,14 @@ export default function VehiclesDashboard() {
 
       {/* Header */}
       <Header userId={userId} />
+
+      {/* --- LOADING SPINNER OVERLAY --- */}
+      {processing && (
+        <div className="loading-overlay">
+            <div className="spinner"></div>
+            <div className="loading-text">Processing...</div>
+        </div>
+      )}
 
       <div className="page-container">
         <div className="page-header">
