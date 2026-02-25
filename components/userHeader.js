@@ -63,6 +63,14 @@ export default function Header({ userId }) {
     router.push("/");
   };
 
+  function capitalizeFirstLetter(str) {
+    if (!str) return "";
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
   return (
     <>
     <style jsx>{`
@@ -312,7 +320,7 @@ export default function Header({ userId }) {
                     {userProfile.name ? userProfile.name.charAt(0).toUpperCase() : "U"}
                 </div>
                 <div className="profile-info">
-                    <span className="profile-name">{userProfile.name}</span>
+                    <span className="profile-name">{capitalizeFirstLetter(userProfile.name)}</span>
                     <span className="profile-role">{userProfile.role}</span>
                 </div>
             </button>
