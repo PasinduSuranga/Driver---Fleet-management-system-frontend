@@ -29,9 +29,9 @@ export default function Dashboard() {
   });
 
   const [assignmentCounts, setAssignmentCounts] = useState({
-    totalAssignments: 0,
-    ongoingAssignments: 0,
-    totalAssignmentsThisMonth: 0
+    total_assignments: 0,
+    ongoing_assignments: 0,
+    completed_assignments: 0
   });
 
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function Dashboard() {
             const driverRes = await fetch("http://localhost:5000/driver/driverCount");
             const driverData = await driverRes.json();
 
-            const assignmentRes = await fetch("http://localhost:5000/assignment/assignmentCount");
+            const assignmentRes = await fetch("http://localhost:5000/assignment/api/assignments/counts");
             const assignmentData = await assignmentRes.json();
 
             setVehicleCounts(vehicleData);
@@ -318,21 +318,21 @@ export default function Dashboard() {
             </div>
             <div className="stats-list">
               <div className="stat-item assignment-total-stat">
-                <span className="stat-label">Total Jobs</span>
+                <span className="stat-label">Total Assignments this month</span>
                 <span className="stat-value assignment-total-value">
-                  <CountUp end={assignmentCounts.totalAssignments} duration={0.5} />
+                  <CountUp end={assignmentCounts.total_assignments} duration={0.5} />
                 </span>
               </div>
               <div className="stat-item ongoing-stat">
-                <span className="stat-label">Ongoing</span>
+                <span className="stat-label">Ongoing Assignments</span>
                 <span className="stat-value ongoing-value">
-                  <CountUp end={assignmentCounts.ongoingAssignments} duration={0.5} />
+                  <CountUp end={assignmentCounts.ongoing_assignments} duration={0.5} />
                 </span>
               </div>
               <div className="stat-item month-stat">
-                <span className="stat-label">This Month</span>
+                <span className="stat-label">Completed This Month</span>
                 <span className="stat-value month-value">
-                  <CountUp end={assignmentCounts.totalAssignmentsThisMonth} duration={0.5} />
+                  <CountUp end={assignmentCounts.completed_assignments} duration={0.5} />
                 </span>
               </div>
             </div>
