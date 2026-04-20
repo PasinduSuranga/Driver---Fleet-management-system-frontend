@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import axios from 'axios';
+import ProtectedRoute from "../../components/protectedRoute";
 
 // --- Simple Dialog Component for Success/Error Messages ---
 const StatusModal = ({ isOpen, type, message, onClose }) => {
@@ -461,6 +462,7 @@ const UpdateVehicleContent = () => {
   };
 
   return (
+    <ProtectedRoute>
     <div style={{
       minHeight: '100vh',
       background: 'linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%)',
@@ -1151,6 +1153,7 @@ const UpdateVehicleContent = () => {
         </form>
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 

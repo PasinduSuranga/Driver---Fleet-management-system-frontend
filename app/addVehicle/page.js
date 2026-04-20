@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from "axios";
-import Header from "../../components/userHeader";
+import ProtectedRoute from "../../components/protectedRoute";
 
 const API_BASE_URL = "http://localhost:5000"; 
 
@@ -407,6 +407,7 @@ const AddVehiclePage = () => {
   };
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
@@ -763,7 +764,6 @@ const AddVehiclePage = () => {
       `}</style>
 
       <div className="add-vehicle-page" ref={topRef}>
-      <Header userId={userId} />
         <div className="form-container">
           <h2 className="form-title">🚗︎ Add Vehicle</h2>
           
@@ -945,6 +945,7 @@ const AddVehiclePage = () => {
 
       </div>
     </>
+    </ProtectedRoute>
   );
 };
 

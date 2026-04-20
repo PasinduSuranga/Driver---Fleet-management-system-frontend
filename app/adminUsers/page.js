@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Sidebar from '../../components/adminNavbar';
+import ProtectedRoute from '../../components/protectedRoute';
 
 const API_BASE_URL = "http://localhost:5000"; 
 
@@ -142,6 +143,7 @@ const UsersPage = () => {
   const roles = ["All", "User", "Admin"];
 
   return (
+    <ProtectedRoute>
     <div style={{ display: 'flex' }}>
       <style>{`
         @keyframes fadeIn { 
@@ -599,6 +601,7 @@ const UsersPage = () => {
 
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 

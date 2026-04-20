@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import axios from 'axios';
 import Header from '../../components/userHeader';
+import ProtectedRoute from '../../components/protectedRoute';
 
 const DriverContent = () => {
   const searchParams = useSearchParams();
@@ -123,6 +124,7 @@ const DriverContent = () => {
   const isAvailable = Number(driver.is_available) === 1;
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -883,6 +885,7 @@ const DriverContent = () => {
         )}
       </div>
     </>
+    </ProtectedRoute>
   );
 };
 

@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { io } from "socket.io-client";
 import CountUp from "react-countup";
 import Header from "../../components/userHeader"; // Adjust the path to where you saved Header.jsx
+import ProtectedRoute from "../../components/protectedRoute";
 
 // Ensure this matches your backend URL
 const socket = io("http://localhost:5000", {
@@ -72,6 +73,7 @@ export default function Dashboard() {
   }, []);
 
   return (
+    <ProtectedRoute>
     <>
       <style jsx global>{`
         @keyframes fadeIn {
@@ -341,5 +343,6 @@ export default function Dashboard() {
         </div>
       </div>
     </>
+    </ProtectedRoute>
   );
 }

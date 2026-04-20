@@ -3,6 +3,7 @@
 import React, { useState, useRef, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "../../components/userHeader";
+import ProtectedRoute from "../../components/protectedRoute";
 
 const API_BASE_URL = "http://localhost:5000/assignment";
 
@@ -41,6 +42,13 @@ function CreateAssignmentForm() {
   });
 
   const topRef = useRef(null);
+
+  // Get today's date in YYYY-MM-DD format for input min attribute
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const minDateStr = `${yyyy}-${mm}-${dd}`;
 
   useEffect(() => {
     if (!customerId) {
@@ -97,6 +105,13 @@ function CreateAssignmentForm() {
     const est_e_TD = `${formData.endDate} ${formData.endTime}:00`;
     const startDt = new Date(est_s_TD);
     const endDt = new Date(est_e_TD);
+    const now = new Date();
+
+    if (startDt < now) {
+      setErrors({ startDate: "Invalid", startTime: "Invalid" });
+      setDialog({ isOpen: true, type: "error", title: "Invalid Time", message: "Estimated start date and time cannot be in the past.", list: [] });
+      return;
+    }
 
     if (startDt >= endDt) {
       setErrors({ endTime: "Invalid", endDate: "Invalid" });
@@ -172,6 +187,14 @@ function CreateAssignmentForm() {
 
     const est_s_TD = `${formData.startDate} ${formData.startTime}:00`;
     const est_e_TD = `${formData.endDate} ${formData.endTime}:00`;
+    const startDt = new Date(est_s_TD);
+    const now = new Date();
+
+    if (startDt < now) {
+      setErrors({ startDate: "Invalid", startTime: "Invalid" });
+      setDialog({ isOpen: true, type: "error", title: "Validation Error", message: "Estimated start date and time cannot be in the past.", list: [] });
+      return;
+    }
 
     const payload = {
       customer_id: customerId,
@@ -205,6 +228,7 @@ function CreateAssignmentForm() {
   };
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -762,7 +786,7 @@ function CreateAssignmentForm() {
                   </svg>
                   Estimated Start Date
                 </label>
-                <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} className="ca-input" />
+                <input type="date" name="startDate" min={minDateStr} value={formData.startDate} onChange={handleChange} className="ca-input" />
                 {errors.startDate && <p className="ca-error">{errors.startDate}</p>}
               </div>
 
@@ -788,7 +812,7 @@ function CreateAssignmentForm() {
                   </svg>
                   Estimated End Date
                 </label>
-                <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} className="ca-input" />
+                <input type="date" name="endDate" min={minDateStr} value={formData.endDate} onChange={handleChange} className="ca-input" />
                 {errors.endDate && <p className="ca-error">{errors.endDate}</p>}
               </div>
 
@@ -991,6 +1015,7 @@ function CreateAssignmentForm() {
         )}
       </div>
     </>
+    </ProtectedRoute>
   );
 }
 

@@ -314,7 +314,7 @@ export default function Header({ userId }) {
     <header className="header-container">
         <div className="left-section">
             <button
-                onClick={() => router.push(`/profile?userId=${userId}`)} 
+                onClick={() => router.push(`/userProfile?userId=${userId}`)} 
                 className="profile-badge">
                 <div className="profile-avatar">
                     {userProfile.name ? userProfile.name.charAt(0).toUpperCase() : "U"}

@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "../../components/userHeader"; 
+import ProtectedRoute from "../../components/protectedRoute";
 
 export default function VehiclesDashboard() {
   const router = useRouter();
@@ -100,7 +101,7 @@ export default function VehiclesDashboard() {
         result = result.filter(v => v.vehicle_type === filters.type);
     }
 
-    // Filter by Availability (0 = Available, 1 = Unavailable)
+    // Filter by Availability (1 = Available, 0 = Unavailable)
     if (filters.availability !== "") {
         result = result.filter(v => String(v.availability) === filters.availability);
     }
@@ -252,6 +253,7 @@ export default function VehiclesDashboard() {
 }
 
   return (
+    <ProtectedRoute>
     <>
       <style jsx global>{`
         @keyframes fadeIn {
@@ -404,15 +406,38 @@ export default function VehiclesDashboard() {
             box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
         }
 
-        /* --- TABLE STYLES --- */
-        .table-container {
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
-            overflow: visible; /* Changed to visible so menu isn't clipped */
-            border: 1px solid #e0f2fe;
-            animation: fadeIn 1s ease-out;
-        }
+        /* Your existing container */
+.table-container {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
+    overflow: visible; /* Keep this so menus don't clip! */
+    border: 1px solid #e0f2fe;
+    animation: fadeIn 1s ease-out;
+}
+
+/* 1. Setup the table to accept border-radius */
+.table-container table {
+    border-collapse: separate; 
+    border-spacing: 0;
+    width: 100%;
+}
+
+/* 2. Round the TOP corners (Usually the Header) */
+.table-container thead tr:first-child th:first-child {
+    border-top-left-radius: 16px;
+}
+.table-container thead tr:first-child th:last-child {
+    border-top-right-radius: 16px;
+}
+
+/* 3. Round the BOTTOM corners (The last row of the body) */
+.table-container tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 16px;
+}
+.table-container tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 16px;
+}
 
         table { 
             width: 100%; 
@@ -838,8 +863,8 @@ export default function VehiclesDashboard() {
             {/* 3. Filter by Availability */}
             <select name="availability" className="filter-select" onChange={handleFilterChange}>
                 <option value="">All Statuses</option>
-                <option value="0">Available</option>
-                <option value="1">Unavailable</option>
+                <option value="1">Available</option>
+                <option value="0">Unavailable</option>
             </select>
 
             {/* 4. Filter by Category */}
@@ -901,8 +926,8 @@ export default function VehiclesDashboard() {
                                     </td>
                                 )}
                                 <td>
-                                    <span className={`status-badge ${v.availability === 0 ? 'status-available' : 'status-unavailable'}`}>
-                                        {v.availability === 0 ? 'Available' : 'Unavailable'}
+                                    <span className={`status-badge ${v.availability === 1 ? 'status-available' : 'status-unavailable'}`}>
+                                        {v.availability === 1 ? 'Available' : 'Unavailable'}
                                     </span>
                                 </td>
                                 <td className="options-cell">
@@ -984,5 +1009,6 @@ export default function VehiclesDashboard() {
         </div>
       )}
     </>
+    </ProtectedRoute>
   );
 }

@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Header from "../../components/userHeader";
+import ProtectedRoute from "../../components/protectedRoute";
 
 const API_BASE_URL = 'http://localhost:5000/assignment';
 
@@ -167,6 +168,7 @@ function SelectCustomerPageContent() {
   );
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -1300,6 +1302,7 @@ function SelectCustomerPageContent() {
         onClose={closeAlert}
       />
     </>
+    </ProtectedRoute>
   );
 }
 

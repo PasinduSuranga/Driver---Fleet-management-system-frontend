@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "../../components/userHeader"; 
+import ProtectedRoute from "../../components/protectedRoute";
 
 export default function DriversDashboard() {
   const router = useRouter();
@@ -227,6 +228,7 @@ function capitalizeFirstLetter(str) {
   }
 
   return (
+    <ProtectedRoute>
     <>
       <style jsx global>{`
         @keyframes fadeIn {
@@ -831,5 +833,6 @@ function capitalizeFirstLetter(str) {
         </div>
       )}
     </>
+    </ProtectedRoute>
   );
 }

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
+import { io } from "socket.io-client"; // <-- Added Socket.io import
 
 const Sidebar = () => {
   const router = useRouter();
@@ -15,6 +16,7 @@ const Sidebar = () => {
 
   const [mounted, setMounted] = useState(false);
   const [userData, setUserData] = useState({ name: 'Loading...', role: '...' });
+  const [alertCount, setAlertCount] = useState(0); // <-- Added alertCount state
 
   // Ensure component is mounted to avoid hydration mismatch
   useEffect(() => {
@@ -44,6 +46,40 @@ const Sidebar = () => {
     fetchUserData();
   }, [userId]);
 
+  // --- ADDED NOTIFICATION / SOCKET LOGIC ---
+  useEffect(() => {
+    const socket = io("http://localhost:5000", {
+        transports: ["websocket"],
+        reconnection: true,
+    });
+
+    const fetchNotifications = async () => {
+        try {
+            const res = await fetch("http://localhost:5000/notification/expiryNotifications");
+            const data = await res.json();
+
+            const total = (data.vehicleAlerts?.length || 0) + (data.driverAlerts?.length || 0);
+            setAlertCount(total);
+        } catch (error) {
+            console.error("Error fetching notifications:", error);
+        }
+    };
+
+    fetchNotifications();
+
+    socket.on("expiryUpdate", (data) => {
+        const total = (data.vehicleAlerts?.length || 0) + (data.driverAlerts?.length || 0);
+        setAlertCount(total);
+    });
+
+    const interval = setInterval(fetchNotifications, 5000);
+
+    return () => {
+        clearInterval(interval);
+        socket.disconnect();
+    };
+  }, []);
+
   const handleLogout = () => {
     sessionStorage.removeItem("userToken");
     sessionStorage.removeItem("userTokenexpiry");
@@ -65,21 +101,33 @@ const Sidebar = () => {
     },
     { 
       name: 'Vehicles', 
-      path: '/adminVehicles', 
+      path: '/adminVehiclesDashboard', 
       icon: '🚗︎',
-      subPaths: ['/adminVehicles', '/vehicles-dashboard', '/vehicleDashboard', '/addvehicle', '/edit-vehicle', '/vehicle-details']
+      subPaths: ['/adminVehiclesDashboard', '/adminViewVehicle', '/adminBlacklistedVehicles']
     },
     { 
       name: 'Drivers', 
-      path: '/adminDrivers', 
+      path: '/adminDriversDashboard', 
       icon: '👥︎',
-      subPaths: ['/adminDrivers', '/driver-dashboard', '/add-driver', '/edit-driver', '/driver-details']
+      subPaths: ['/adminDriversDashboard', '/adminBlacklistedDrivers', '/adminViewDriver']
+    },
+    {
+      name: 'Customers',
+      path: '/adminCustomersDashboard',
+      icon: '👤︎👤︎',
+      subPaths: ['/adminCustomersDashboard']
     },
     { 
       name: 'Assignments', 
       path: '/adminCurrentTrips', 
       icon: '📋︎',
       subPaths: ['/adminCurrentTrips', '/assignments-dashboard', '/add-assignment', '/edit-assignment', '/assignment-details']
+    },
+    {
+      name: 'Notifications',
+      path: '/adminNotifications',
+      icon: '🔔︎',
+      subPaths: ['/adminNotifications']
     },
     { 
       name: 'Reports', 
@@ -118,6 +166,11 @@ const Sidebar = () => {
           to { opacity: 1; transform: translateX(0); }
         }
 
+        @keyframes pulseBadge {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.08); }
+        }
+
         .sidebar-container {
           width: 250px;
           height: 100vh;
@@ -138,6 +191,22 @@ const Sidebar = () => {
         .nav-section::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.15); }
         .nav-section::-webkit-scrollbar-thumb { background: rgba(59, 130, 246, 0.4); border-radius: 4px; }
         
+        .sidebar-badge {
+          background: #ef4444;
+          color: white;
+          border-radius: 12px;
+          min-width: 22px;
+          height: 22px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 11px;
+          font-weight: 700;
+          padding: 0 6px;
+          animation: pulseBadge 2s infinite;
+          box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+
         @media (max-width: 768px) {
           .sidebar-container { width: 220px; }
         }
@@ -233,8 +302,19 @@ const Sidebar = () => {
                 </span>
                 <span style={{ flex: 1 }}>{item.name}</span>
                 
+                {/* ADDED: Notification Badge Rendering Logic */}
+                {item.name === 'Notifications' && alertCount > 0 && (
+                  <span className="sidebar-badge">
+                    {alertCount > 99 ? '99+' : alertCount}
+                  </span>
+                )}
+
                 {/* Active Dot Indicator */}
-                {active && (
+                {active && item.name !== 'Notifications' && (
+                  <span style={{ fontSize: "10px", opacity: 0.9 }}>●</span>
+                )}
+                {/* Fallback Dot for active notification tab if no unread alerts exist */}
+                {active && item.name === 'Notifications' && alertCount === 0 && (
                   <span style={{ fontSize: "10px", opacity: 0.9 }}>●</span>
                 )}
               </Link>
@@ -244,7 +324,7 @@ const Sidebar = () => {
 
         {/* 3. Bottom Section */}
         <div style={{ padding: "20px", borderTop: "1px solid rgba(255, 255, 255, 0.1)", background: "rgba(0, 0, 0, 0.15)" }}>
-          <Link href={userId ? `/profile?userId=${userId}` : '/profile'} style={{
+          <Link href={userId ? `/userProfile?userId=${userId}` : '/profile'} style={{
             display: "flex", alignItems: "center", gap: "12px", padding: "12px",
             borderRadius: "12px", marginBottom: "15px", textDecoration: "none",
             background: "rgba(255, 255, 255, 0.05)", border: "1px solid rgba(255, 255, 255, 0.1)",

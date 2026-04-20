@@ -4,6 +4,7 @@ import { useSearchParams, useRouter } from 'next/navigation'; // Updated for App
 import { useEffect, useState, Suspense } from 'react';
 import axios from 'axios';
 import Header from '../../components/userHeader';
+import ProtectedRoute from '../../components/protectedRoute';
 
 // Component to handle the actual content
 const VehicleContent = () => {
@@ -135,6 +136,7 @@ function formatDate(dateString) {
 }
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @keyframes fadeIn {
@@ -699,6 +701,7 @@ function formatDate(dateString) {
         )}
       </div>
     </>
+    </ProtectedRoute>
   );
 };
 

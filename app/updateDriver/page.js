@@ -3,6 +3,7 @@
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
 import axios from 'axios';
+import ProtectedRoute from "../../components/protectedRoute";
 
 // --- Simple Dialog Component for Success/Error Messages ---
 const StatusModal = ({ isOpen, type, message, onClose }) => {
@@ -321,6 +322,7 @@ const UpdateDriverContent = () => {
   );
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -1101,6 +1103,7 @@ const UpdateDriverContent = () => {
         </div>
       </div>
     </>
+    </ProtectedRoute>
   );
 };
 

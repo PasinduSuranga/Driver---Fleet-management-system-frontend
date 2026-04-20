@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Sidebar from '../../../components/adminNavbar'; // Adjusted path for nested route
+import ProtectedRoute from '../../../components/protectedRoute'; // Importing the ProtectedRoute component
 
 const API_BASE_URL = "http://localhost:5000"; 
 
@@ -136,6 +137,7 @@ const BlacklistPage = () => {
   const roles = ["All", "User", "Admin"];
 
   return (
+    <ProtectedRoute>
     <div style={{ display: 'flex' }}>
       <style>{`
         @keyframes fadeIn { 
@@ -518,6 +520,7 @@ const BlacklistPage = () => {
 
       </div>
     </div>
+    </ProtectedRoute>
   );
 };
 

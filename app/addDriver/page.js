@@ -4,6 +4,7 @@ import React, { useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Header from "../../components/userHeader";
+import ProtectedRoute from "../../components/protectedRoute";
 
 const API_BASE_URL = "http://localhost:5000";
 
@@ -206,6 +207,7 @@ export default function AddDriverPage() {
   };
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
@@ -1010,5 +1012,6 @@ export default function AddDriverPage() {
         )}
       </div>
     </>
+    </ProtectedRoute>
   );
 }

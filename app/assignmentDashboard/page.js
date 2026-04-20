@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Header from "../../components/userHeader";
+import ProtectedRoute from "../../components/protectedRoute";
 
 const API_BASE_URL = "http://localhost:5000/assignment";
 
@@ -417,8 +418,6 @@ function FleetDashboardContent() {
                 </table>
                 <div class="totals-wrapper">
                   <table class="totals-table">
-                    <tr><td class="label">Subtotal</td><td class="value">Rs. ${parseFloat(data.company_payment).toFixed(2)}</td></tr>
-                    <tr><td class="label">Tax (0%)</td><td class="value">Rs. 0.00</td></tr>
                     <tr class="grand-total"><td class="label">Total Due</td><td class="value">Rs. ${parseFloat(data.company_payment).toFixed(2)}</td></tr>
                   </table>
                 </div>
@@ -471,6 +470,7 @@ function FleetDashboardContent() {
 }
 
   return (
+    <ProtectedRoute>
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
@@ -1457,17 +1457,17 @@ function FleetDashboardContent() {
               </div>
 
               {filteredReportsPayments.length === 0 ? (
-                <div style={{ textAlign: 'center', padding: '48px 20px', color: '#94a3b8' }}>
-                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
-                    <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="12" y1="1" x2="12" y2="23"/>
-                      <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
-                    </svg>
-                  </div>
-                  {reportsSearch ? 'No drivers match your search.' : 'No driver payments found for this month.'}
-                </div>
-              ) : null}
-
+  <div style={{ textAlign: 'center', padding: '48px 20px', color: '#94a3b8' }}>
+    {/* Fixed: changed justify-content to justifyContent */}
+    <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 12 }}>
+      <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round">
+        <line x1="12" y1="1" x2="12" y2="23"/>
+        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+      </svg>
+    </div>
+    {reportsSearch ? 'No drivers match your search.' : 'No driver payments found for this month.'}
+  </div>
+) : null}
               {filteredReportsPayments.map((driver, idx) => (
                 <div key={idx} className="driver-payment-card">
                   <div className="driver-payment-header">
@@ -1551,6 +1551,7 @@ function FleetDashboardContent() {
         onConfirm={dialog.onConfirm}
       />
     </>
+    </ProtectedRoute>
   );
 }
 
