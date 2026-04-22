@@ -986,7 +986,7 @@ const UpdateVehicleContent = () => {
                   />
                   {previews.licensePhoto && (
                     <div style={{ position: 'relative', marginBottom: '12px', display: 'inline-block' }}>
-                      <img 
+                  <img 
                         src={previews.licensePhoto} 
                         alt="Preview" 
                         style={{
