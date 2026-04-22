@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,6 +11,7 @@ const API_BASE_URL = "http://localhost:5000/assignment";
 // --- CUSTOM ALERT DIALOG COMPONENT ---
 const AlertDialog = ({ isOpen, title, message, onClose, onConfirm, type }) => {
   if (!isOpen) return null;
+  // Render the component UI
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -58,6 +60,8 @@ function AdminTripsContent() {
     setDialog({ isOpen: true, type, title, message, onConfirm });
   };
 
+  // Fetch data from API
+
   const fetchOngoing = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/assignments/ongoing`);
@@ -66,6 +70,8 @@ function AdminTripsContent() {
       setOngoingJobs(Array.isArray(data) ? data : []);
     } catch (err) { showAlert("error", "Error", "Failed to load ongoing assignments."); }
   };
+
+  // Fetch data from API
 
   const fetchCompleted = async () => {
     try {
@@ -77,6 +83,7 @@ function AdminTripsContent() {
   };
 
   // --- ADDED FETCH FUNCTION FOR CANCELLED ---
+  // Fetch data from API
   const fetchCancelled = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/assignments/cancelled`);
@@ -85,6 +92,8 @@ function AdminTripsContent() {
       setCancelledJobs(Array.isArray(data) ? data : []);
     } catch (err) { showAlert("error", "Error", "Failed to load cancelled assignments."); }
   };
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (activeTab === "ongoing") fetchOngoing();
@@ -146,6 +155,8 @@ function AdminTripsContent() {
     if (!str) return "";
     return str.toUpperCase();
   };
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -1037,6 +1048,7 @@ function AdminTripsContent() {
 }
 
 export default function AdminTrips() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

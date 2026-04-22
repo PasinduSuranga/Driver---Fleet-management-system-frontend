@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -21,6 +22,8 @@ function AdminBlacklistedDriversContent() {
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
 
+  // Fetch data from API
+
   const fetchBlacklisted = async () => {
     setLoading(true);
     try {
@@ -35,15 +38,22 @@ function AdminBlacklistedDriversContent() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => { fetchBlacklisted(); }, []);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) setOpenMenuId(null);
     };
     if (openMenuId !== null) document.addEventListener('mousedown', handleClickOutside);
+    // Render the component UI
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [openMenuId]);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (searchQuery) {
@@ -95,6 +105,8 @@ function AdminBlacklistedDriversContent() {
 
   const capitalize = (str) => str ? str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : "";
   const toUpper = (str) => str ? str.toUpperCase() : "";
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -755,6 +767,7 @@ function AdminBlacklistedDriversContent() {
 }
 
 export default function AdminBlacklistedDrivers() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

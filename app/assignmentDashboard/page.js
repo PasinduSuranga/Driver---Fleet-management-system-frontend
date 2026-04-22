@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,6 +11,7 @@ const API_BASE_URL = "http://localhost:5000/assignment";
 // --- CUSTOM ALERT DIALOG COMPONENT ---
 const AlertDialog = ({ isOpen, title, message, onClose, onConfirm, type }) => {
   if (!isOpen) return null;
+  // Render the component UI
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -73,6 +75,8 @@ function FleetDashboardContent() {
     setDialog({ isOpen: true, type, title, message, onConfirm });
   };
 
+  // Fetch data from API
+
   const fetchOngoing = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/assignments/ongoing`);
@@ -81,6 +85,8 @@ function FleetDashboardContent() {
       setOngoingJobs(Array.isArray(data) ? data : []);
     } catch (err) { showAlert("error", "Error", "Failed to load ongoing assignments."); }
   };
+
+  // Fetch data from API
 
   const fetchCompleted = async () => {
     try {
@@ -91,6 +97,8 @@ function FleetDashboardContent() {
     } catch (err) { showAlert("error", "Error", "Failed to load completed assignments."); }
   };
 
+  // Fetch data from API
+
   const fetchReports = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/assignments/reports?month=${reportMonth}`);
@@ -99,6 +107,8 @@ function FleetDashboardContent() {
       setReports({ driverPayments: Array.isArray(data.driverPayments) ? data.driverPayments : [] });
     } catch (err) { showAlert("error", "Error", "Failed to load financial reports."); }
   };
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (activeTab === "ongoing") fetchOngoing();
@@ -468,6 +478,8 @@ function FleetDashboardContent() {
   if (!str) return "";
   return str.toUpperCase();
 }
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -1556,6 +1568,7 @@ function FleetDashboardContent() {
 }
 
 export default function FleetDashboard() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

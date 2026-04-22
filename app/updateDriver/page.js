@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
@@ -10,6 +11,8 @@ const StatusModal = ({ isOpen, type, message, onClose }) => {
   if (!isOpen) return null;
 
   const isSuccess = type === 'success';
+
+  // Render the component UI
 
   return (
     <div style={{
@@ -159,6 +162,8 @@ const UpdateDriverContent = () => {
     licenseFrontPhoto: null,
     licenseBackPhoto: null
   });
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (driverId) {
@@ -320,6 +325,8 @@ const UpdateDriverContent = () => {
       <style>{`@keyframes udSpin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -1108,6 +1115,7 @@ const UpdateDriverContent = () => {
 };
 
 export default function UpdateDriverPage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

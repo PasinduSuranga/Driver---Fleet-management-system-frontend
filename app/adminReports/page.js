@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -19,6 +20,8 @@ function AdminReportsContent() {
   const [fleetFilter, setFleetFilter] = useState("");
 
   const [dialog, setDialog] = useState({ isOpen: false, type: "", title: "", message: "" });
+
+  // Fetch data from API
 
   const fetchReports = async () => {
     setLoading(true);
@@ -43,6 +46,8 @@ function AdminReportsContent() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchReports();
   }, [monthFilter, fleetFilter]);
@@ -58,6 +63,8 @@ function AdminReportsContent() {
   const handlePrint = () => {
     window.print();
   };
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -1057,6 +1064,7 @@ function AdminReportsContent() {
 }
 
 export default function AdminReports() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

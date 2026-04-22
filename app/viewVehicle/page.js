@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import { useSearchParams, useRouter } from 'next/navigation'; // Updated for App Router
 import { useEffect, useState, Suspense } from 'react';
@@ -25,6 +26,8 @@ const VehicleContent = () => {
     message: "",
     isError: false
   });
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (vehicleNumber) {
@@ -134,6 +137,8 @@ function formatDate(dateString) {
     day: 'numeric' // "28"
   });
 }
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -707,6 +712,7 @@ function formatDate(dateString) {
 
 // Main Page Component wrapping content in Suspense (Required for useSearchParams in App Router)
 export default function ViewVehiclePage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{ 

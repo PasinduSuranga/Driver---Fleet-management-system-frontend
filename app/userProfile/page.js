@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -9,6 +10,7 @@ const API_BASE_URL = "http://localhost:5000/authentication";
 // --- CUSTOM ALERT DIALOG COMPONENT ---
 const AlertDialog = ({ isOpen, title, message, onClose, type }) => {
   if (!isOpen) return null;
+  // Render the component UI
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -58,6 +60,8 @@ function ProfileContent() {
     setDialog({ isOpen: true, type, title, message });
   };
 
+  // Fetch data from API
+
   const fetchProfile = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/details/${userId}`);
@@ -74,6 +78,8 @@ function ProfileContent() {
       setLoading(false);
     }
   };
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (userId) fetchProfile();
@@ -176,6 +182,7 @@ function ProfileContent() {
   }
 
   if (loading) {
+    // Render the component UI
     return (
       <div style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
@@ -194,6 +201,7 @@ function ProfileContent() {
   }
 
   if (!userProfile) {
+    // Render the component UI
     return (
       <div style={{
         minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -204,6 +212,8 @@ function ProfileContent() {
       </div>
     );
   }
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -802,6 +812,7 @@ function ProfileContent() {
 }
 
 export default function UserProfile() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

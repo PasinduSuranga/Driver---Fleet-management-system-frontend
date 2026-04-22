@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -63,6 +64,8 @@ function Register() {
     return true;
   };
 
+  // Handle form submission and API integration
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -119,6 +122,8 @@ function Register() {
       setIsLoading(false);
     }
   };
+
+  // Render the component UI
 
   return (
     <>

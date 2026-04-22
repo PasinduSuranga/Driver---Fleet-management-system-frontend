@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -10,6 +11,7 @@ const API_BASE_URL = "http://localhost:5000/admin";
 // --- CUSTOM ALERT DIALOG COMPONENT ---
 const AlertDialog = ({ isOpen, title, message, onClose, type }) => {
   if (!isOpen) return null;
+  // Render the component UI
   return (
     <div className="modal-overlay">
       <div className="modal-content">
@@ -41,6 +43,8 @@ function AdminDashboardContent() {
   const [stats, setStats] = useState(null);
   const [dialog, setDialog] = useState({ isOpen: false, type: "", title: "", message: "" });
 
+  // Fetch data from API
+
   const fetchStats = async () => {
     setLoading(true);
     try {
@@ -58,12 +62,16 @@ function AdminDashboardContent() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchStats();
   }, []);
 
   const capitalize = (str) => str ? str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : "";
   const toUpper = (str) => str ? str.toUpperCase() : "";
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -998,6 +1006,7 @@ function AdminDashboardContent() {
 }
 
 export default function AdminDashboard() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

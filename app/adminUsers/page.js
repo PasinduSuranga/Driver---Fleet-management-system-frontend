@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -42,6 +43,7 @@ const UsersPage = () => {
   }
 
   // --- Fetch Users ---
+  // Fetch data from API
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -55,11 +57,14 @@ const UsersPage = () => {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchUsers();
   }, []);
 
   // --- Filter Logic ---
+  // Set up side effects on component mount or state change
   useEffect(() => {
     let result = users;
 
@@ -141,6 +146,8 @@ const UsersPage = () => {
 
   // Define Roles explicitly
   const roles = ["All", "User", "Admin"];
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>

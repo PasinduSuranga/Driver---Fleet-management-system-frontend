@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -24,6 +25,8 @@ function AdminDriversContent() {
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
 
+  // Fetch data from API
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -38,15 +41,22 @@ function AdminDriversContent() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => { fetchData(); }, []);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) setOpenMenuId(null);
     };
     if (openMenuId !== null) document.addEventListener('mousedown', handleClickOutside);
+    // Render the component UI
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [openMenuId]);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     let result = allDrivers;
@@ -138,6 +148,8 @@ function AdminDriversContent() {
 
   const showExpiryColumns = filters.expiry !== "";
   const capitalize = (str) => str ? str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') : "";
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -842,6 +854,7 @@ function AdminDriversContent() {
 }
 
 export default function AdminDrivers() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

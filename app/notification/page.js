@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -15,7 +16,10 @@ function NotificationsContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
+    // Fetch data from API
     const fetchNotifications = async () => {
       try {
         const res = await fetch(`${API_BASE_URL}/allNotifications`);
@@ -69,6 +73,8 @@ function NotificationsContent() {
   };
 
   const groupedNotifications = groupNotifications(notifications);
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -517,6 +523,8 @@ function NotificationsContent() {
                   const docSuffix = notif.docTypes.length > 1 ? 'Documents' : 'Document';
                   const isExpired = notif.daysLeft < 0;
 
+                  // Render the component UI
+
                   return (
                     <div
                       key={`${notif.id}-${index}`}
@@ -596,6 +604,7 @@ function NotificationsContent() {
 }
 
 export default function NotificationsPage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

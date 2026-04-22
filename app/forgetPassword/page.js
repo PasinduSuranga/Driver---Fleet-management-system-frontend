@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -130,6 +131,8 @@ function ForgotPassword() {
         setIsLoading(false);
     }
   };
+
+  // Render the component UI
 
   return (
     <>

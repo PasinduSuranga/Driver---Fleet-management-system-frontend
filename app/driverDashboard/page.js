@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -36,6 +37,7 @@ export default function DriversDashboard() {
   const menuRef = useRef(null);
 
   // --- 1. INITIAL DATA FETCH ---
+  // Fetch data from API
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -56,11 +58,14 @@ export default function DriversDashboard() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchData();
   }, []);
 
   // Close menu when clicking outside
+  // Set up side effects on component mount or state change
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -72,12 +77,15 @@ export default function DriversDashboard() {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
+    // Render the component UI
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [openMenuId]);
 
   // --- 2. LIVE FRONTEND FILTERING LOGIC ---
+  // Set up side effects on component mount or state change
   useEffect(() => {
     let result = allDrivers;
 
@@ -226,6 +234,8 @@ function capitalizeFirstLetter(str) {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>

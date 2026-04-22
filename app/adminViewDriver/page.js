@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
@@ -18,6 +19,8 @@ const AdminDriverContent = () => {
   const [driver, setDriver] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dialog, setDialog] = useState({ isOpen: false, title: "", message: "", isError: false });
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (driverId) fetchDriverDetails(driverId);
@@ -91,6 +94,8 @@ const AdminDriverContent = () => {
       </div>
     </div>
   );
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -887,6 +892,7 @@ const AdminDriverContent = () => {
 };
 
 export default function AdminViewDriverPage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

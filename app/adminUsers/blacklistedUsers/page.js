@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -37,6 +38,7 @@ const BlacklistPage = () => {
   }
 
   // Fetch Blacklist
+  // Fetch data from API
   const fetchBlacklist = async () => {
     setLoading(true);
     try {
@@ -50,11 +52,14 @@ const BlacklistPage = () => {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchBlacklist();
   }, []);
 
   // Filter Logic
+  // Set up side effects on component mount or state change
   useEffect(() => {
     let result = blacklistedUsers;
 
@@ -135,6 +140,8 @@ const BlacklistPage = () => {
 
   // Define Roles explicitly as requested (User and Admin)
   const roles = ["All", "User", "Admin"];
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>

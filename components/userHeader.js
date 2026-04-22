@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { io } from "socket.io-client";
 
+// Header component for user dashboard
 export default function Header({ userId }) {
   const router = useRouter();
   
@@ -15,6 +16,7 @@ export default function Header({ userId }) {
 
   const [alertCount, setAlertCount] = useState(0);
 
+  // Fetch user profile data based on userId
   useEffect(() => {
     if (userId) {
         fetch(`http://localhost:5000/authentication/getUsers/${userId}`)
@@ -57,6 +59,7 @@ export default function Header({ userId }) {
     };
   }, []);
 
+  // Handle user logout and clear session storage
   const handleLogout = () => {
     sessionStorage.removeItem("userToken");
     sessionStorage.removeItem("userTokenexpiry");

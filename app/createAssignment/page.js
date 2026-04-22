@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useState, useRef, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -50,6 +51,8 @@ function CreateAssignmentForm() {
   const dd = String(today.getDate()).padStart(2, '0');
   const minDateStr = `${yyyy}-${mm}-${dd}`;
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     if (!customerId) {
       setDialog({
@@ -73,6 +76,8 @@ function CreateAssignmentForm() {
       router.push(`/newAssaignment?userId=${userId || ""}`);
     }
   };
+
+  // Handle input changes
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -145,6 +150,8 @@ function CreateAssignmentForm() {
       setIsChecking(false);
     }
   };
+
+  // Handle form submission and API integration
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -226,6 +233,8 @@ function CreateAssignmentForm() {
       setIsSubmitting(false);
     }
   };
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -1020,6 +1029,7 @@ function CreateAssignmentForm() {
 }
 
 export default function Page() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

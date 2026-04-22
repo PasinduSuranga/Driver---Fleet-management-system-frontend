@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -35,8 +36,11 @@ export default function Dashboard() {
     completed_assignments: 0
   });
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     // 1. Fetch Initial Counts (HTTP Fallback)
+    // Fetch data from API
     const fetchInitialCounts = async () => {
         try {
             const vehicleRes = await fetch("http://localhost:5000/vehicle/vehicleCount");
@@ -67,10 +71,14 @@ export default function Dashboard() {
 
     socket.on("updateCounts", updateCounts);
     
+    // Render the component UI
+    
     return () => {
       socket.off("updateCounts", updateCounts);
     };
   }, []);
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>

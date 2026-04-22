@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -10,6 +11,7 @@ const API_BASE_URL = 'http://localhost:5000/assignment';
 // --- CUSTOM ALERT DIALOG COMPONENT ---
 const AlertDialog = ({ isOpen, title, message, onClose }) => {
   if (!isOpen) return null;
+  // Render the component UI
   return (
     <div className="sc-modal-overlay">
       <div className="sc-modal-content">
@@ -53,6 +55,8 @@ function SelectCustomerPageContent() {
   // --- SEARCH STATE ---
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Fetch data from API
+
   const fetchCustomers = async () => {
     try {
       const res = await fetch(`${API_BASE_URL}/api/customers/getall`);
@@ -68,6 +72,8 @@ function SelectCustomerPageContent() {
       showAlert("Error", "Failed to load customers.");
     }
   };
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => { fetchCustomers(); }, []);
 
@@ -166,6 +172,8 @@ function SelectCustomerPageContent() {
   const filteredCustomers = customers.filter(c =>
     (c.company_name || '').toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -1307,6 +1315,7 @@ function SelectCustomerPageContent() {
 }
 
 export default function SelectCustomerPage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
@@ -22,6 +23,8 @@ const DriverContent = () => {
     message: "",
     isError: false
   });
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (driverId) {
@@ -122,6 +125,8 @@ const DriverContent = () => {
   const mainPhoto = driver.front_photo || driver.back_photo || "";
 
   const isAvailable = Number(driver.is_available) === 1;
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -890,6 +895,7 @@ const DriverContent = () => {
 };
 
 export default function ViewDriverPage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

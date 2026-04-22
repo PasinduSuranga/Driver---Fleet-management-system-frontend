@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -32,6 +33,8 @@ const SearchableSelect = ({ options, value, onChange, placeholder, labelKey, val
   const [searchTerm, setSearchTerm] = useState("");
   const wrapperRef = useRef(null);
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
@@ -39,8 +42,11 @@ const SearchableSelect = ({ options, value, onChange, placeholder, labelKey, val
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
+    // Render the component UI
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [wrapperRef]);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     const selected = options.find(opt => opt[valueKey] === value);
@@ -55,6 +61,8 @@ const SearchableSelect = ({ options, value, onChange, placeholder, labelKey, val
   const filteredOptions = options.filter(opt => 
     opt[labelKey].toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // Render the component UI
 
   return (
     <div className="searchable-select-wrapper" ref={wrapperRef}>
@@ -146,9 +154,13 @@ const AddVehiclePage = () => {
     }
   }, []);
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     const checkReg = async () => {
@@ -171,8 +183,13 @@ const AddVehiclePage = () => {
         checkReg();
     }, 500);
 
+    // Render the component UI
+
     return () => clearTimeout(timeoutId);
   }, [formData.regNo]);
+
+
+  // Handle input changes
 
 
   const handleChange = (e) => {
@@ -290,6 +307,8 @@ const AddVehiclePage = () => {
     }
   };
 
+  // Handle form submission and API integration
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrors({});
@@ -405,6 +424,8 @@ const AddVehiclePage = () => {
       setIsSubmitting(false);
     }
   };
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>

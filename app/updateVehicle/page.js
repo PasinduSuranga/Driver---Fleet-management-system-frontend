@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
@@ -10,6 +11,8 @@ const StatusModal = ({ isOpen, type, message, onClose }) => {
   if (!isOpen) return null;
   
   const isSuccess = type === 'success';
+  
+  // Render the component UI
   
   return (
     <div style={{
@@ -164,6 +167,7 @@ const UpdateVehicleContent = () => {
   });
 
   // 1. Fetch Existing Details
+  // Set up side effects on component mount or state change
   useEffect(() => {
     if (vehicleNumberParam) {
       fetchDetails(vehicleNumberParam);
@@ -212,6 +216,7 @@ const UpdateVehicleContent = () => {
   };
 
   // 2. Owner Helpers
+  // Fetch data from API
   const fetchOwners = async () => {
     try {
       const res = await axios.get('http://localhost:5000/owner/owners'); 
@@ -460,6 +465,8 @@ const UpdateVehicleContent = () => {
     color: '#475569',
     marginBottom: '4px'
   };
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -1158,6 +1165,7 @@ const UpdateVehicleContent = () => {
 };
 
 export default function UpdateVehiclePage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

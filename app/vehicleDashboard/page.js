@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -43,6 +44,7 @@ export default function VehiclesDashboard() {
   const menuRef = useRef(null);
 
   // --- 1. INITIAL DATA FETCH (Runs once) ---
+  // Fetch data from API
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -64,11 +66,14 @@ export default function VehiclesDashboard() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchData();
   }, []);
 
   // Close menu when clicking outside
+  // Set up side effects on component mount or state change
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
@@ -80,12 +85,15 @@ export default function VehiclesDashboard() {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
+    // Render the component UI
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [openMenuId]);
 
   // --- 2. LIVE FRONTEND FILTERING LOGIC ---
+  // Set up side effects on component mount or state change
   useEffect(() => {
     let result = allVehicles;
 
@@ -251,6 +259,8 @@ export default function VehiclesDashboard() {
   if (!str) return "";
   return str.toUpperCase();
 }
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>

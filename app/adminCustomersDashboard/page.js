@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,6 +17,8 @@ function AdminCustomersContent() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [dialog, setDialog] = useState({ isOpen: false, title: "", message: "", isError: false });
+
+  // Fetch data from API
 
   const fetchCustomers = async () => {
     setLoading(true);
@@ -38,9 +41,13 @@ function AdminCustomersContent() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => {
     fetchCustomers();
   }, []);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (searchQuery) {
@@ -66,6 +73,8 @@ function AdminCustomersContent() {
     if (str.startsWith('07')) return str.replace(/(\d{3})(\d{3})(\d{4})/, "$1 $2 $3");
     return number;
   };
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -588,6 +597,7 @@ function AdminCustomersContent() {
 }
 
 export default function AdminCustomers() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

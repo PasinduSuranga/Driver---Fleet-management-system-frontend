@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import React, { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -27,6 +28,8 @@ function AdminVehiclesContent() {
   const [openMenuId, setOpenMenuId] = useState(null);
   const menuRef = useRef(null);
 
+  // Fetch data from API
+
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -45,7 +48,11 @@ function AdminVehiclesContent() {
     }
   };
 
+  // Set up side effects on component mount or state change
+
   useEffect(() => { fetchData(); }, []);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -54,8 +61,11 @@ function AdminVehiclesContent() {
       }
     };
     if (openMenuId !== null) document.addEventListener('mousedown', handleClickOutside);
+    // Render the component UI
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [openMenuId]);
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     let result = allVehicles;
@@ -155,6 +165,8 @@ function AdminVehiclesContent() {
   const showExpiryColumns = filters.expiry !== "";
   const capitalizeFirstLetter = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
   const toUpper = (str) => str ? str.toUpperCase() : "";
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -943,6 +955,7 @@ function AdminVehiclesContent() {
 }
 
 export default function AdminVehicles() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{

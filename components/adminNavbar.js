@@ -6,6 +6,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { io } from "socket.io-client"; // <-- Added Socket.io import
 
+// Sidebar component for admin dashboard
 const Sidebar = () => {
   const router = useRouter();
   const pathname = usePathname();
@@ -80,12 +81,14 @@ const Sidebar = () => {
     };
   }, []);
 
+  // Handle user logout and clear session storage
   const handleLogout = () => {
     sessionStorage.removeItem("userToken");
     sessionStorage.removeItem("userTokenexpiry");
     router.push("/");
   };
 
+  // Define navigation items for the sidebar
   const navItems = [
     { 
       name: 'Dashboard', 

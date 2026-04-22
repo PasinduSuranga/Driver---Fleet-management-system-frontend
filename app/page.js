@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import CompanyLogo from "../components/companyLogo";
 
+// Main Login Component
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +21,7 @@ function Login() {
     setDialog({ ...dialog, isOpen: false });
   };
 
+  // Handle form submission and validation
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,6 +55,7 @@ function Login() {
 
     setIsLoading(true);
 
+    // Send login request to the server
     try {
       const res = await fetch("http://localhost:5000/authentication/login", {
         method: "POST",
@@ -72,6 +75,7 @@ function Login() {
         const userRole = data.user?.role;
         const userId = data.user?.userId;
 
+        // Redirect user based on their role
         if (userRole === "admin") {
             router.push(`/adminDashboard?userId=${userId}`);
         } else if (userRole === "user") {

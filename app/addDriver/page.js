@@ -1,4 +1,5 @@
 'use client';
+// Main page component and its dependencies
 
 import React, { useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -48,6 +49,8 @@ export default function AddDriverPage() {
     if (wasSuccess) window.location.reload();
   };
 
+  // Handle input changes
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
@@ -79,6 +82,8 @@ export default function AddDriverPage() {
     const fileInput = document.querySelector(`input[name="${field}"]`);
     if (fileInput) fileInput.value = "";
   };
+
+  // Handle form submission and API integration
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -205,6 +210,8 @@ export default function AddDriverPage() {
       setIsSubmitting(false);
     }
   };
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>

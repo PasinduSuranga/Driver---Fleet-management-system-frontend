@@ -1,4 +1,5 @@
 "use client";
+// Main page component and its dependencies
 
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useEffect, useState, Suspense } from 'react';
@@ -17,6 +18,8 @@ const AdminVehicleContent = () => {
   const [loading, setLoading] = useState(true);
 
   const [dialog, setDialog] = useState({ isOpen: false, title: "", message: "", isError: false });
+
+  // Set up side effects on component mount or state change
 
   useEffect(() => {
     if (vehicleNumber) fetchVehicleDetails(vehicleNumber);
@@ -92,6 +95,8 @@ const AdminVehicleContent = () => {
       </div>
     </div>
   );
+
+  // Render the component UI
 
   return (
     <ProtectedRoute>
@@ -932,6 +937,7 @@ const AdminVehicleContent = () => {
 };
 
 export default function AdminViewVehiclePage() {
+  // Render the component UI
   return (
     <Suspense fallback={
       <div style={{
